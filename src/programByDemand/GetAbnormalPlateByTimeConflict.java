@@ -478,10 +478,11 @@ public class GetAbnormalPlateByTimeConflict {
 		
 		//根据上一步筛选出的出行记录，检测同一车牌出行记录是否存在出行时间冲突的数据，若冲突数据超过三条，被判断为异常数据提取出来。
 		//detectTimeConflict(abnormalDataPath_1, abnormalPlateResPath_1);
-		detectTimeConflictAll(abnormalDataPath, abnormalPlateResPath);
+		//detectTimeConflictAll(abnormalDataPath, abnormalPlateResPath);
 		
 		//根据上一步提取到的存在冲突出行时间的车牌信息，更新feeStatisticsByWeekResSorted.csv文件，筛掉查出来的异常记录。
 		//updateWeekFeeSorted(feeStatisticsByWeekResSortedPath, feeStatisticsByWeekResSortedNewPath, abnormalPlateResPath);
+		updateWeekFeeSorted(feeStatisticsByWeekResSortedPath, feeStatisticsByWeekResSortedNewPath, abnormalPlateResPath_1);
 		
 		
 		//test
