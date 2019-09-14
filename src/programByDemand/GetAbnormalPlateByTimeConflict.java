@@ -28,12 +28,12 @@ public class GetAbnormalPlateByTimeConflict {
 	private static String abnormalPlatePath = "/home/pq/truckFeeAnalysis/异常数据/日最高消费超3万.csv";
 	private static String abnormalPlateResPath = "/home/pq/truckFeeAnalysis/异常数据/存在冲突时间车牌.csv";
 	
-	private static String abnormalDataPath_1 = "I:\\programData\\truckFee\\异常数据\\abnormalPlateRec.csv";
+	private static String abnormalDataPath_1 = "I:\\programData\\truckFee\\异常数据\\test\\abnormalPlateRec(3万).csv";
 	private static String abnormalPlatePath_1 = "I:\\programData\\truckFee\\异常数据\\日最高消费超3万.csv";
 	private static String abnormalRecResPath_1 = "I:\\programData\\truckFee\\异常数据\\存在冲突时间记录.csv";
 	private static String feeStatisticsByWeekResSortedPath = "I:\\programData\\truckFee\\feeStatisticsByWeekResSorted.csv"; 
 	private static String feeStatisticsByWeekResSortedNewPath = "I:\\programData\\truckFee\\feeStatisticsByWeekResSorted_new.csv";
-	private static String abnormalPlateResPath_1 = "I:\\programData\\truckFee\\异常数据\\存在冲突时间车牌.csv";
+	private static String abnormalPlateResPath_1 = "I:\\programData\\truckFee\\异常数据\\test\\存在冲突时间车牌.csv";
 	
 	public static Map<String, String> getAbnormalPlateMap(String path) {
 		Map<String, String> plateMap = new HashMap<>();//存放所有日消费金额超过3万的车牌
@@ -283,11 +283,12 @@ public class GetAbnormalPlateByTimeConflict {
 			OutputStreamWriter writerStream = new OutputStreamWriter(new FileOutputStream(path), "utf-8");
 			BufferedWriter writer = new BufferedWriter(writerStream);
 			//writer.write("车牌,冲突记录1_入,冲突记录1_出,冲突记录2_入,冲突记录2_出,冲突记录1_入,冲突记录1_出,冲突记录2_入,冲突记录2_出,冲突记录1_入,冲突记录1_出,冲突记录2_入,冲突记录2_出\n");
-			String confRec = "";
-			int num = 0;
-			boolean flag = false;
 
 			for (String key : dataMap.keySet()) {
+				String confRec = "";
+				int num = 0;
+				boolean flag = false;
+				
 				ArrayList<String> timeList = dataMap.get(key);
 				int len = timeList.size();
 				for(int i = 0; i < (len-1); i++) {
@@ -342,12 +343,11 @@ public class GetAbnormalPlateByTimeConflict {
 
 			String line = reader.readLine();
 			String[] lineArray;
-
+			
 			while ((line = reader.readLine()) != null) {
 	
 				lineArray = line.split(",");
 				if(lineArray.length == 11) {
-
 					String plate = lineArray[9].trim();//车牌号
 					String outDate = formateDate(lineArray[0].trim().substring(21, 35));//出站时间
 					String inDate = formateDate(lineArray[4]);//入站时间
@@ -367,6 +367,7 @@ public class GetAbnormalPlateByTimeConflict {
 					}
 				}
 			}
+			System.out.println("车牌总数" + timeMap.size());
 			reader.close();	
 			System.out.println(inPath + " read finish!");
 			
@@ -472,17 +473,19 @@ public class GetAbnormalPlateByTimeConflict {
 	}
 	
 	public static void main(String[] args) {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		System.out.println(df.format(new Date()) + "数据开始处理");// new Date()为获取当前系统时间
 		//给定2018年6-8月份出口交易数据，给出日消费额超过3万的车牌，筛选出异常车牌在该期间的出行记录
 		//getAbnormalPlateByTimeConflict(exTransDataPath, abnormalDataPath, abnormalPlatePath);
 		//getAbnormalPlateByTimeConflictAll(exTransDataPath, abnormalDataPath);
 		
 		//根据上一步筛选出的出行记录，检测同一车牌出行记录是否存在出行时间冲突的数据，若冲突数据超过三条，被判断为异常数据提取出来。
 		//detectTimeConflict(abnormalDataPath_1, abnormalPlateResPath_1);
-		//detectTimeConflictAll(abnormalDataPath, abnormalPlateResPath);
+		detectTimeConflictAll(abnormalDataPath, abnormalPlateResPath);
 		
 		//根据上一步提取到的存在冲突出行时间的车牌信息，更新feeStatisticsByWeekResSorted.csv文件，筛掉查出来的异常记录。
 		//updateWeekFeeSorted(feeStatisticsByWeekResSortedPath, feeStatisticsByWeekResSortedNewPath, abnormalPlateResPath);
-		updateWeekFeeSorted(feeStatisticsByWeekResSortedPath, feeStatisticsByWeekResSortedNewPath, abnormalPlateResPath_1);
+		//updateWeekFeeSorted(feeStatisticsByWeekResSortedPath, feeStatisticsByWeekResSortedNewPath, abnormalPlateResPath_1);
 		
 		
 		//test
@@ -500,6 +503,8 @@ public class GetAbnormalPlateByTimeConflict {
 //		if(plateMap2.containsKey("皖KJ8103_1")) {
 //			System.out.println("皖KJ8103_1");
 //		}
+		
+		System.out.println(df.format(new Date()) + "数据处理结束");// new Date()为获取当前系统时间
 	}
 
 }

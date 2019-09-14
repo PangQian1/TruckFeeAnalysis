@@ -62,12 +62,8 @@ public class Test {
     }
 	
 	public static void main(String[] args) throws ParseException {
-		int[] a = {4,6,55,6,7,8,44,3};
-		Arrays.sort(a);
-		System.out.println(a);
-		for(int i=0;i<a.length;i++) {
-			System.out.println(a[i]);
-		}
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
 	}
 
 }
